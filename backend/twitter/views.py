@@ -13,7 +13,15 @@ def tweets(request):
         tweets = Tweet.objects.all()
         serializer = TweetSerializer(tweets, many=True)
         return Response(serializer.data)
-        # return Response({})
+
     # insert a new record for a tweet
     elif request.method == 'POST':
-        return Response({})
+        data = {
+            'name': request.data.get('name'),
+            'message': request.data.get('message')
+        }
+        serializer = TweetSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

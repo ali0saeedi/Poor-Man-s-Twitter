@@ -31,3 +31,32 @@ class GetAllTweetsTest(TestCase):
         serializer = TweetSerializer(tweets, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class CreateNewTweetTest(TestCase):
+    """ Test module for inserting a new tweet """
+
+    def setUp(self):
+        self.valid_payload = {
+            'name': 'Jack',
+            'message' : 'This a message from Jack.'
+        }
+        self.invalid_payload = {
+            'name': '',
+            'message' : 'This is a message from John.'
+        }
+
+    def test_create_valid_tweet(self):
+        response = client.post(
+            reverse('tweets'),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_invalid_tweet(self):
+        response = client.post(
+            reverse('tweets'),
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
