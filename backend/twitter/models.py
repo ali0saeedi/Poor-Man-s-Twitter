@@ -1,9 +1,9 @@
 from django.db import models
 
-class Twitt(models.Model):
+class Tweet(models.Model):
     """
-    Twitt Model
-    Defines the attributes of a twitt
+    Tweet Model
+    Defines the attributes of a Tweet
     """
     name = models.CharField(max_length=20)
     message = models.CharField(max_length=50)
@@ -11,4 +11,7 @@ class Twitt(models.Model):
 
     #TODO improve message
     def __repr__(self):
-        return 'new twitt is added by : ' + self.name
+        return 'new tweet is added by : ' + self.name
+
+    def get_ownership(self):
+        return 'This tweet blong\'s to : ' + self.name
