@@ -10,7 +10,16 @@ from .serializers import TweetSerializer
 def tweets(request):
     # get all tweets
     if request.method == 'GET':
-        tweets = Tweet.objects.all()
+        sortBy = request.GET.get('sort-by','-created_at')
+        if (sortBy=='time-desc'):
+            sortBy = '-created_at'
+        elif (sortBy=='time-asc'):
+            sortBy = 'created_at'
+        elif (sortBy=='name-a-z'):
+            sortBy = 'name'
+        elif (sortBy=='name-z-a'):
+            sortBy = '-name'
+        tweets = Tweet.objects.order_by(sortBy)
         serializer = TweetSerializer(tweets, many=True)
         return Response(serializer.data)
 
