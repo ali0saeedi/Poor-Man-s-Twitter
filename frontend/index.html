@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Poor Man's Twitter</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <h2>Post a new teet: </h2>
+            <form method="post" action="">
+                <div>
+                    <label for="name" >Name: </label>
+                    <input v-model="tweetInputName" :maxlength="maxLengthName" type="text" id="name" name="name" > ({{ maxLengthName - tweetInputName.length }} left)
+                </div>
+
+                <div >
+                    <label for="description" >Description: </label>
+                    <textarea v-model="tweetInputMessage" :maxlength="maxLengthMessage" id="description" name="description"></textarea>
+                    ({{ maxLengthMessage - tweetInputMessage.length }} left)
+                </div>
+               <div >
+                   <button @click="post_tweet" type="submit" >Submit</button>
+               </div> 
+                
+            </form>
+            
+        </div>
+        <h2>Recent tweets: </h2>
+        <div class="options">
+            <fieldset class="sort-by-action">
+                <legend>Sort by:</legend>
+               
+                    <input v-model="sortBy" @change="get_tweets" type="radio" id="time-desc" name="sort-by" value="time-desc">
+                    <label for="time-desc">Time descending</label>
+                
+                    <input v-model="sortBy" @change="get_tweets" type="radio" id="time-asc" name="sort-by" value="time-asc">
+                    <label for="time-asc">Time ascending</label>
+               
+                    <input v-model="sortBy" @change="get_tweets" type="radio" id="name-a-z" name="sort-by" value="name-a-z">
+                    <label for="name-a-z">Name A-Z</label>
+                
+                    <input v-model="sortBy" @change="get_tweets" type="radio" id="name-z-a" name="sort-by" value="name-z-a">
+                    <label for="name-z-a">Name Z-A</label>
+              
+            </fieldset>
+        </div>
+        
+        <div>
+                <table v-bind:tweets = "recent-tweets" id="recent-tweets">
+                  <tr>
+                      <th>Name</th>
+                      <th>Message</th>
+                      <th>Date Posted</th>
+                  </tr>
+                  <tr v-for="tweet in tweets">
+                    <td>{{ tweet.name }} </td>
+                    <td>{{ tweet.message }} </td>
+                    <td>{{ Date(tweet.created_at) }} </td>
+                  </tr>
+               </table>
+
+        </div>
+
+    </div>
+
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
